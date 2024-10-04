@@ -9,16 +9,29 @@ param location string = resourceGroup().location
 param environmentType string = 'dev'
 
 @description('The initial pool configuration of the AKS cluster')
-var initialPoolConfiguration = (environmentType == 'prod') ? {
-  name: '${clusterName}-NodePool'
+var initialAgentPoolConfiguration = (environmentType == 'prod') ? {
+  name: '${clusterName}-AgentPool'
   count: 3
   mode: 'System'
-  vmSkuName: 'Standard_D2s_v3'
+  vmSkuName: 'Standard_D8ds_v5'
 } : {
-  name: '${clusterName}-NodePool'
+  name: '${clusterName}-AgentPool'
   count: 1
   mode: 'System'
-  vmSkuName: 'Standard_D2s_v3'
+  vmSkuName: 'Standard_D8ds_v5'
+}
+
+@description('The initial pool configuration of the AKS cluster')
+var initialUserPoolConfiguration = (environmentType == 'prod') ? {
+  name: '${clusterName}-UserPool'
+  count: 3
+  mode: 'System'
+  vmSkuName: 'Standard_D8ds_v5'
+} : {
+  name: '${clusterName}-UserPool'
+  count: 1
+  mode: 'User'
+  vmSkuName: 'Standard_D8ds_v5'
 }
 
 @allowed([
@@ -61,21 +74,29 @@ resource aks 'Microsoft.NetworkCloud/kubernetesClusters@2024-06-01-preview' = {
     kubernetesVersion: kubernetesVersion
     initialAgentPoolConfigurations: [
       {
-        name: initialPoolConfiguration.name
-        count: initialPoolConfiguration.count
-        mode: initialPoolConfiguration.mode
-        vmSkuName: initialPoolConfiguration.vmSkuName
+        name: initialAgentPoolConfiguration.name
+        count: initialAgentPoolConfiguration.count
+        mode: initialAgentPoolConfiguration.mode
+        vmSkuName: initialAgentPoolConfiguration.vmSkuName
+      }
+      {
+        name: initialUserPoolConfiguration.name
+        count: initialUserPoolConfiguration.count
+        mode: initialUserPoolConfiguration.mode
+        vmSkuName: initialUserPoolConfiguration.vmSkuName
       }
     ]
     controlPlaneNodeConfiguration: {
-      vmSkuName: initialPoolConfiguration.vmSkuName
-      count: initialPoolConfiguration.count
+      vmSkuName: initialAgentPoolConfiguration.vmSkuName
+      count: initialAgentPoolConfiguration.count
       availabilityZones: availabilityZones
+      administratorConfiguration: {
+        adminUsername: '${clusterName}Admin'
+      }
     }
     networkConfiguration:{
       cloudServicesNetworkId: cloudServicesNetworkId
       cniNetworkId: cniNetworkId
-
     }
     administratorConfiguration:{
       adminUsername: '${clusterName}Admin'
@@ -97,7 +118,7 @@ output clusterLocation string = aks.location
 output clusterKubernetesVersion string = aks.properties.kubernetesVersion
 
 @description('The initial pool configuration of the AKS cluster')
-output clusterInitialPoolConfiguration object = initialPoolConfiguration
+output clusterInitialPoolConfiguration object = initialAgentPoolConfiguration
 
 @description('The control plane node configuration of the AKS cluster')
 output clusterControlPlaneNodeConfiguration object = aks.properties.controlPlaneNodeConfiguration
