@@ -25,6 +25,6 @@ jobs:
 
         - name: Build Bicep files
           run: |
-            for file in $(find . -name '*.bicep'); do
+            for file in $(find ./src -name '*.bicep'); do
                 az bicep build --file ./bicepArtifacts/$file
             done
