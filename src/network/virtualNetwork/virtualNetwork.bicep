@@ -37,9 +37,10 @@ output virtualNetworkAddressPrefix string = virtualNetwork.properties.addressSpa
 
 @description('Deploy a Subnet to the virtual network')
 module subnet './subNet.bicep' = {
-  name: 'default'
+  name: 'subnet'
   params: {
     virtualNetworkName: virtualNetwork.name
+    subnetName: 'default'
   }
 }
 
