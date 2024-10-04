@@ -13,16 +13,24 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-        - name: Set up Azure CLI and Install Bicep CLI
-          run: sudo az bicep upgrade
+        - name: Update Packages and Install Bicep CLI
+          run: | 
+            sudo apt-get update && \
+            sudo apt-get upgrade -y && \
+            sudo az bicep upgrade
         
         - name: Checkout repository
           uses: actions/checkout@v2
 
         - name: Build Bicep files
           run: |
-            az bicep build --file ./src/storage/storageAccount.bicep --outdir ./bicepArtifacts
-            # for file in $(find ./src -name '*.bicep'); do
-            #     echo "Building $file"
-            #     az bicep build --file --outdir ./bicepArtifacts
-            # done
+            for file in $(find ./src -name '*.bicep'); do
+                echo "Building $file"
+                az bicep build --file --outdir ./bicepArtifacts
+            done
+
+        - name: Upload Bicep Artifacts
+          uses: actions/upload-artifact@v4
+          with:
+            name: artifactsBicep-ARM-Templates
+            path: ./bicepArtifacts/*.json
