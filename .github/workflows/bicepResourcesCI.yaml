@@ -17,11 +17,9 @@ jobs:
           uses: actions/checkout@v2
 
         - name: Set up Azure CLI and Install Bicep CLI
-          uses: azure/cli@v2
-          with:
-            azcliversion: latest
-            inlineScript: |
-                az bicep install
+          run: |
+                sudo az bicep install \
+                sudo az bicep upgrade
 
         - name: Build Bicep files
           run: |
