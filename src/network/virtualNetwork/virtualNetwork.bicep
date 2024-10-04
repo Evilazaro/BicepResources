@@ -35,3 +35,22 @@ output virtualNetworkLocation string = virtualNetwork.location
 @description('The address prefix of the virtual network')
 output virtualNetworkAddressPrefix string = virtualNetwork.properties.addressSpace.addressPrefixes[0]
 
+@description('Deploy a Subnet to the virtual network')
+module subnet './subNet.bicep' = {
+  name: 'default'
+  params: {
+    virtualNetworkName: virtualNetwork.name
+  }
+}
+
+@description('The name of the subnet')
+output subnetName string = subnet.outputs.subnetName
+
+@description('The address prefix of the subnet')
+output subnetAddressPrefix string = subnet.outputs.subnetAddressPrefix
+
+@description('The ID of the virtual network')
+output virtualNetworkId string = virtualNetwork.id
+
+@description('The ID of the subnet')
+output subnetId string = subnet.outputs.subnetId
