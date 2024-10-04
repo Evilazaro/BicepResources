@@ -13,13 +13,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+        - name: Set up Azure CLI and Install Bicep CLI
+          run: sudo az bicep upgrade
+        
         - name: Checkout repository
           uses: actions/checkout@v2
-
-        - name: Set up Azure CLI and Install Bicep CLI
-          run: |
-                sudo az bicep install \
-                sudo az bicep upgrade
 
         - name: Build Bicep files
           run: |
