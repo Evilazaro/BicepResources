@@ -1,1 +1,29 @@
+name: Bicep Resources CI
 
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Set up Azure CLI
+          uses: azure/cli@v2
+
+        - name: Install Bicep CLI
+          run: az bicep install
+
+        - name: Build Bicep files
+          run: |
+            for file in $(find . -name '*.bicep'); do
+                az bicep build --file $file
+            done
