@@ -43,6 +43,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   properties: {
     accessTier: accesTier
   }
+  tags: tags
 }
 
 @description('The name of the storage account')
