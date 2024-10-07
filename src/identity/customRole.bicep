@@ -1,5 +1,5 @@
-param customRoleName string
-param customRoleDescription string
+@description('The name of the app the custom role is being created for')
+param appName string
 
 // Replace the assignableScopes variable with the assignable scopes of the custom role
 @description('The assignable scopes of the custom role')
@@ -30,6 +30,11 @@ var permissions = [
   }
 ]
 
+@description('The name of the custom role')
+var customRoleName = '${appName}-custom-role'
+
+@description('The description of the custom role')
+var customRoleDescription = 'Custom role for ${appName}'
 
 @description('Create a custom role in Azure')
 resource customRole 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' = {

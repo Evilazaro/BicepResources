@@ -1,5 +1,8 @@
-@description('Deploy a virtual network to Azure')
-param virtualNetworkName string = 'myVnet'
+@description('The name of the app the virtual network is being deployed for')
+param appName string 
+
+@description('The type of the environment the virtual network is being deployed to')
+param environmentType string = 'dev'
 
 @description('The location of the virtual network')
 param location string = resourceGroup().location
@@ -11,6 +14,9 @@ param addressPrefix string = '10.0.0.0/16'
 param tags object = {
   
 }
+
+@description('Deploy a virtual network to Azure')
+var virtualNetworkName = '${appName}-vnet'
 
 @description('Deploy a virtual network to Azure')
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-01-01' = {
@@ -39,8 +45,8 @@ output virtualNetworkAddressPrefix string = virtualNetwork.properties.addressSpa
 module subnet './subNet.bicep' = {
   name: 'subnet'
   params: {
-    virtualNetworkName: virtualNetwork.name
-    subnetName: 'default'
+    virtualNetworkName: virtualNetworkName
+    environmentType: environmentType
   }
 }
 

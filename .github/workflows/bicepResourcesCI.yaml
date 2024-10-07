@@ -3,6 +3,7 @@ name: Bicep Resources CI
 on:
     push:
         branches:
+            - 'feature/**' # Branches containing 'feature' in the name
             - main
     pull_request:
         branches:
@@ -16,7 +17,6 @@ jobs:
         - name: Update Packages and Install Bicep CLI
           run: | 
             sudo apt-get update && \
-            sudo apt-get upgrade -y && \
             sudo az bicep upgrade
         
         - name: Checkout repository
