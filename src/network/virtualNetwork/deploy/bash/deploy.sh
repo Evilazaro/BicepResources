@@ -26,9 +26,8 @@ deployVirtualNetwork() {
     echo "Deploying virtual network in resource group: $resourceGroup"
     az deployment group create \
         --resource-group "$resourceGroup" \
-        --template-file ../../virtualNetwork.bicep \
-        --parameters appName='eyraptor' \
-                     environmentType='dev' 
+        --template-file ../../deployAllNetwork.bicep \
+        --parameters appName='eyraptor' 
         
 
     if [ $? -ne 0 ]; then
