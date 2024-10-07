@@ -1,6 +1,9 @@
 @description('Deploy a virtual network to Azure')
 param virtualNetworkName string = 'myVnet'
 
+@description('The type of the environment the virtual network is being deployed to')
+param environmentType string = 'dev'
+
 @description('The location of the virtual network')
 param location string = resourceGroup().location
 
@@ -41,6 +44,7 @@ module subnet './subNet.bicep' = {
   params: {
     virtualNetworkName: virtualNetwork.name
     subnetName: 'default'
+    environmentType: environmentType
   }
 }
 

@@ -1,24 +1,14 @@
-param storageAccountName string = uniqueString(resourceGroup().id, 'stg')
+@description('The name of the application')
+param appName string
+
+@description('The location where the storage account will be created')
 param location string = resourceGroup().location
 
-@description('The SKU of the storage account')
 @allowed([
-  'Standard_LRS'
-  'Standard_GRS'
-  'Standard_RAGRS'
-  'Standard_ZRS'
-  'Premium_LRS'
-  'Premium_ZRS'
+  'dev'
+  'prod'
 ])
-param sku string = 'Standard_LRS'
-
-@description('The kind of the storage account')
-@allowed([
-  'StorageV2'
-  'Storage'
-  'BlobStorage'
-])
-param kind string = 'StorageV2'
+param environmentType string = 'dev'
 
 @description('The access tier of the storage account')
 @allowed([
@@ -31,6 +21,26 @@ param accesTier string = 'Hot'
 param tags object = {
   
 }
+
+// Allowed values
+// 'Standard_LRS'
+// 'Standard_GRS'
+// 'Standard_RAGRS'
+// 'Standard_ZRS'
+// 'Premium_LRS'
+// 'Premium_ZRS'
+@description('The SKU of the storage account')
+var sku = (environmentType == 'dev') ? 'Standard_LRS' : 'Premium_ZRS'
+
+// Allowed values
+// 'StorageV2'
+// 'Storage'
+// 'BlobStorage'
+@description('The kind of the storage account')
+var kind = 'StorageV2'
+
+@description('The name of the storage account')
+var storageAccountName = '${appName}-sa'
 
 @description('Deploy a storage account to Azure with a unique name')
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {

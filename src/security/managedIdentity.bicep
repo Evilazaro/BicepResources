@@ -1,20 +1,22 @@
 @description('Managed Identity Name')
-param managedIdentityName string = uniqueString(resourceGroup().id, 'mi')
+param appName string
 
+@description('Deploy a managed identity to Azure')
+var managedIdentityName = '${appName}-mi'
 
-resource securityGroup 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview' = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview' = {
   name: managedIdentityName
   location: resourceGroup().location
 }
 
 @description('Managed Identity Principal Id')
-output managedIdentityName string = securityGroup.name
+output managedIdentityName string = managedIdentity.name
 
 @description('Managed Identity Principal Id')
-output managedIdentityPrincipalId string = securityGroup.properties.principalId
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
 @description('Managed Identity Tenant Id')
-output managedIdentityTenantId string = securityGroup.properties.tenantId
+output managedIdentityTenantId string = managedIdentity.properties.tenantId
 
 @description('Managed Identity Client Id')
-output managedIdentityClientId string = securityGroup.properties.clientId
+output managedIdentityClientId string = managedIdentity.properties.clientId

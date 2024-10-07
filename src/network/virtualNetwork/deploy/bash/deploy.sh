@@ -27,7 +27,9 @@ deployVirtualNetwork() {
     az deployment group create \
         --resource-group "$resourceGroup" \
         --template-file ../../virtualNetwork.bicep \
-        --parameters virtualNetworkName='eyraptorVnet' 
+        --parameters virtualNetworkName='eyraptorvirtualnetwork' \
+                     environmentType='dev' 
+        
 
     if [ $? -ne 0 ]; then
         echo "Failed to deploy virtual network"

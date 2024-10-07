@@ -23,13 +23,15 @@ deployStorageAccount() {
         exit 1
     fi
 
+    tags="{'environment':'dev','department':'IT'}"
+
     echo "Deploying storage account in resource group: $resourceGroup"
     az deployment group create \
         --resource-group "$resourceGroup" \
         --template-file ../../storageAccount.bicep \
-        --parameters storageAccountName='eyraptorstorageaccount' \
+        --parameters appName='eyraptorstorageaccount' \
                     location="$location" \
-                    kind='StorageV2' 
+                    tags="$tags"
 
     if [ $? -ne 0 ]; then
         echo "Failed to deploy storage account"
