@@ -1,14 +1,11 @@
-@description('Name of the application that the subnet is being deployed to')
-param appName string
+@description('Create a subnet in a virtual network')
+param virtualNetworkName string
 
 @description('The address prefix of the subnet')
 param subnetAddressPrefix string = '10.0.0.0/24'
 
 @description('The type of the environment the subnet is being deployed to')
 param environmentType string = 'dev'
-
-@description('Create a subnet in a virtual network')
-var virtualNetworkName = '${appName}-vnet'
 
 @description('The virtual network to deploy the subnet to')
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
