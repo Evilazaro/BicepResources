@@ -1,7 +1,7 @@
-@description('The name of the application')
+@description('The name of the storage account')
 @maxLength(21)
 @minLength(3)
-param appName string
+param storageAccountName string
 
 @description('The location where the storage account will be created')
 param location string = resourceGroup().location
@@ -40,9 +40,6 @@ var sku = (environmentType == 'dev') ? 'Standard_LRS' : 'Premium_ZRS'
 // 'BlobStorage'
 @description('The kind of the storage account')
 var kind = 'StorageV2'
-
-@description('The name of the storage account')
-var storageAccountName = '${appName}sa'
 
 @description('Deploy a storage account to Azure with a unique name')
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
