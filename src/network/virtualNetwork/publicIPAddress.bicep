@@ -55,6 +55,7 @@ param domainNameLabelScope string = 'SubscriptionReuse'
 @description('The Protection Mode of the Public IP Address')
 param protectionMode string = 'VirtualNetworkInherited'
 
+
 @description('Deploy a Public IP Address to Azure')
 resource app 'Microsoft.Network/publicIPAddresses@2024-01-01' = {
   name: publicIpAddressName

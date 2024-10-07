@@ -1,9 +1,6 @@
 @description('The name of the app the virtual network is being deployed for')
 param appName string 
 
-@description('The type of the environment the virtual network is being deployed to')
-param environmentType string = 'dev'
-
 @description('The location of the virtual network')
 param location string = resourceGroup().location
 
@@ -32,14 +29,8 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-01-01' = {
   tags: tags  
 }
 
-@description('The Subnet Address Prefix')
-var subnetAddressPrefix  = '10.0.0.0/24'
+@description('The ID of the virtual network')
+output virtualNetworkId string = virtualNetwork.id
 
-module subnet './subNet.bicep' = {
-  name: 'subnet'
-  params: {
-    virtualNetworkName: virtualNetwork.name
-    environmentType: environmentType
-    subnetAddressPrefix: subnetAddressPrefix
-  }
-}
+@description('The name of the virtual network')
+output virtualNetworkName string = virtualNetworkName

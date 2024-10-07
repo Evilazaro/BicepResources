@@ -1,48 +1,31 @@
-@description('The name of the app the network interface is being deployed for')
-param appName string
-
-@allowed([
-  'dev'
-  'prod'
-])
-@description('The type of the environment the network interface is being deployed to')
-param environmentType string = 'dev'
-
 @description('Name of an Existent Virtual Network')
-var vnetName = '${appName}-vnet'
+param virtualNetworkName string
 
-@description('Get the virtual network already created')
+@description('Existent Subnet to Deploy a Network Interface')
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
-  name: vnetName
+  name: virtualNetworkName
 }
 
-@description('Get the subnet already created')
-module subnet './subNet.bicep' = {
-  name: 'subnet'
-  params: {
-    virtualNetworkName: virtualNetwork.name
-    subnetAddressPrefix: '10.1.0.0/24'
-    environmentType: environmentType
-  }
-}
-
+@description('Deploy a Network Interface to Azure')
 resource networkInterface 'Microsoft.Network/networkInterfaces@2024-01-01' = {
-  name: '${appName}-nic'
+  name: '${virtualNetworkName}-nic'
   location: resourceGroup().location
   properties: {
     ipConfigurations: [
       {
-        name: '${appName}-ipconfig'
+        name: 'ipconfig1'
         properties: {
-          privateIPAllocationMethod: 'Dynamic'
+          primary: true
           subnet: {
-            id: subnet.outputs.subnetId
+            id: virtualNetwork.properties.subnets[0].id
           }
+          privateIPAllocationMethod: 'Dynamic'
+          publicIPAddress: null
         }
       }
     ]
   }
   dependsOn: [
-    subnet
+    virtualNetwork
   ]
 }
