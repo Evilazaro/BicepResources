@@ -1,5 +1,5 @@
-@description('Application Name of the solution to be used in the Public IP Address name')
-param appName string
+@description('The name of the Public IP Address')
+param publicIPAddressName string
 
 @description('The IP Address of the Public IP Address')
 param ipAddress string = '172.210.117.56'
@@ -20,9 +20,6 @@ param publicIPAllocationMethod string = 'Static'
 
 @description('The Idle Timeout in Minutes')
 param idleTimeoutInMinutes int = 4
-
-@description('The name of the Public IP Address')
-var publicIpAddressName = '${appName}-PublicIpAddress'
 
 @allowed([
   'Basic'
@@ -58,7 +55,7 @@ param protectionMode string = 'VirtualNetworkInherited'
 
 @description('Deploy a Public IP Address to Azure')
 resource app 'Microsoft.Network/publicIPAddresses@2024-01-01' = {
-  name: publicIpAddressName
+  name: publicIPAddressName
   location: resourceGroup().location
   sku: {
     name: skuName
@@ -74,10 +71,6 @@ resource app 'Microsoft.Network/publicIPAddresses@2024-01-01' = {
     publicIPAddressVersion: publicIPAddressVersion
     publicIPAllocationMethod: publicIPAllocationMethod
     idleTimeoutInMinutes: idleTimeoutInMinutes
-    dnsSettings: {
-      domainNameLabel: appName
-      domainNameLabelScope: domainNameLabelScope
-    }
     ipTags: []
     ddosSettings: {
       protectionMode: protectionMode

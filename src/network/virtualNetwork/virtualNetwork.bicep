@@ -1,5 +1,5 @@
-@description('The name of the app the virtual network is being deployed for')
-param appName string 
+@description('The name of the virtual network')
+param virtualNetworkName string 
 
 @description('The location of the virtual network')
 param location string = resourceGroup().location
@@ -11,9 +11,6 @@ param addressPrefix string = '10.0.0.0/16'
 param tags object = {
   
 }
-
-@description('Deploy a virtual network to Azure')
-var virtualNetworkName = '${appName}-vnet'
 
 @description('Deploy a virtual network to Azure')
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-01-01' = {

@@ -1,10 +1,13 @@
 param appName string 
 
+@description('The name of the virtual network')
+var virtualNetworkName = '${appName}-vnet'
+
 @description('Deploy a Virtual Network to Azure')
 module virtualNetwork './virtualNetwork.bicep' = {
   name: 'virtualNetwork'
   params: {
-    appName: appName
+    virtualNetworkName: virtualNetworkName
   }
 }
 
@@ -51,11 +54,14 @@ var securityRules = [
   }
 ]
 
+@description('The name of the network security group')
+var nsgName = '${appName}-nsg'
+
 @description('Deploy a Network Security Group to Azure')
 module nsg '../../security/nsg.bicep' = {
   name: 'nsg'
   params: {
-    nsgName: appName
+    nsgName: nsgName
     securityRules: securityRules
     tags: {}
   }
@@ -85,10 +91,11 @@ module networkInterface './networkInterface.bicep' = {
   ]
 }
 
+var publicIPAddressName = '${appName}-ip'
 module publicIPAddress './publicIPAddress.bicep' = {
   name: 'publicIPAddress'
   params: {
-    appName: appName
+    publicIPAddressName: publicIPAddressName
   }
   dependsOn: [
     virtualNetwork
