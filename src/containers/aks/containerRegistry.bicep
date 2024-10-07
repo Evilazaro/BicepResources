@@ -1,9 +1,21 @@
 
-param appName string
-param skuName string
-
 @description('Name of the Azure Container Registry')
-var containerRegistryName = '${appName}-cr'
+param containerRegistryName string
+
+@allowed([
+  'Basic'
+  'Standard'
+])
+@description('The SKU of the Azure Container Registry')
+param skuName string = 'Basic'
+
+@allowed([
+  'SystemAssigned'
+  'UserAssigned'
+])
+@description('The identity type of the Azure Container Registry')
+param identityType string = 'SystemAssigned'
+
 
 @description('Create an Azure Container Registry')
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-11-01-preview' = {
@@ -12,7 +24,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-11-01-pr
   sku: {
     name: skuName
   }
-  properties: {
-    adminUserEnabled: false
-  }
+  identity: {
+    type: identityType
+  }	
 }
