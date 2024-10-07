@@ -5,7 +5,7 @@ param virtualNetworkName string
 param subnetAddressPrefix string = '10.0.0.0/24'
 
 @description('The ID of the network security group')
-param nsgId string = ''
+param nsgId string
 
 @description('The virtual network to deploy the subnet to')
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
@@ -29,3 +29,6 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-01-01' = {
 
 @description('The ID of the subnet')
 output subnetId string = subnet.id
+
+@description('The name of the subnet')
+output subnetName string = subnetName
