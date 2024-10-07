@@ -77,10 +77,21 @@ module subnet './subNet.bicep' = {
 module networkInterface './networkInterface.bicep' = {
   name: 'networkInterface'
   params: {
-    subnetName: subnet.outputs.subnetName
+    virtualNetworkName: virtualNetwork.outputs.virtualNetworkName
   }
   dependsOn: [
     virtualNetwork
     subnet
+  ]
+}
+
+module publicIPAddress './publicIPAddress.bicep' = {
+  name: 'publicIPAddress'
+  params: {
+    appName: appName
+  }
+  dependsOn: [
+    virtualNetwork
+    networkInterface
   ]
 }

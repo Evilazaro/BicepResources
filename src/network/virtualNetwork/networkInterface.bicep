@@ -1,21 +1,23 @@
 @description('Name of an Existent Virtual Network')
-param subnetName string
+param virtualNetworkName string
 
 @description('Existent Subnet to Deploy a Network Interface')
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-01-01' existing = {
-  name: subnetName
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
+  name: virtualNetworkName
 }
 
 @description('Deploy a Network Interface to Azure')
 resource networkInterface 'Microsoft.Network/networkInterfaces@2024-01-01' = {
-  name: '${subnetName}-nic'
+  name: '${virtualNetworkName}-nic'
+  location: resourceGroup().location
   properties: {
     ipConfigurations: [
       {
         name: 'ipconfig1'
         properties: {
+          primary: true
           subnet: {
-            id: subnet.id
+            id: virtualNetwork.properties.subnets[0].id
           }
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: null
@@ -23,4 +25,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2024-01-01' = {
       }
     ]
   }
+  dependsOn: [
+    virtualNetwork
+  ]
 }
