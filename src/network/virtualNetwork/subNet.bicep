@@ -211,18 +211,6 @@ module nsg '../../security/nsg.bicep' = {
   }
 }
 
-@description('The name of the network security group')
-output nsgName string = nsg.outputs.nsgName
-
-@description('The ID of the network security group')
-output nsgId string = nsg.outputs.nsgId
-
-@description('The security rules of the network security group')
-output nsgSecurityRules array = nsg.outputs.nsgSecurityRules
-
-@description('The location of the network security group')
-output nsgLocation string = nsg.outputs.nsgLocation
-
 @description('The name of the subnet')
 var subnetName = '${virtualNetworkName}-subnet'
 
@@ -240,15 +228,3 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-01-01' = {
     nsg
   ]
 }
-
-@description('The name of the subnet')
-output subnetName string = subnet.name
-
-@description('The address prefix of the subnet')
-output subnetAddressPrefix string = subnet.properties.addressPrefix
-
-@description('The ID of the virtual network')
-output virtualNetworkId string = virtualNetwork.id
-
-@description('The ID of the subnet')
-output subnetId string = subnet.id

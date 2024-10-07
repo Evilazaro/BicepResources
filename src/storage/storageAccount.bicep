@@ -56,21 +56,3 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   tags: tags
 }
 
-@description('The name of the storage account')
-output storageAccountName string = storageAccount.name
-
-@description('The location of the storage account')
-output storageAccountLocation string = storageAccount.location
-
-@description('The SKU of the storage account')
-output storageAccountSku string = storageAccount.sku.name
-
-@description('The kind of the storage account')
-output storageAccountKind string = storageAccount.kind
-
-@description('The access tier of the storage account')
-output storageAccountAccessTier string = storageAccount.properties.accessTier
-
-@description('The tags of the storage account')
-output storageAccountTags object = storageAccount.tags
-

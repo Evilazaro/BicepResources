@@ -47,19 +47,3 @@ resource customRole 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview'
     type: 'CustomRole'
   }
 }
-
-
-@description('The ID of the custom role')
-output customRoleId string = customRole.id
-
-@description('The name of the custom role')
-output customRoleName string = customRole.properties.roleName
-
-@description('The description of the custom role')
-output customRoleDescription string = customRole.properties.description
-
-@description('The assignable scopes of the custom role')
-output customRoleAssignableScopes array = customRole.properties.assignableScopes
-
-@description('The permissions of the custom role')
-output customRolePermissions array = customRole.properties.permissions

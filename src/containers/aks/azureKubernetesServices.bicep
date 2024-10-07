@@ -107,30 +107,3 @@ resource aks 'Microsoft.NetworkCloud/kubernetesClusters@2024-06-01-preview' = {
     }
   }
 }
-
-@description('The name of the AKS cluster')
-output clusterName string = aks.name
-
-@description('The location of the AKS cluster')
-output clusterLocation string = aks.location
-
-@description('The version of Kubernetes to use for the AKS cluster')
-output clusterKubernetesVersion string = aks.properties.kubernetesVersion
-
-@description('The initial pool configuration of the AKS cluster')
-output clusterInitialPoolConfiguration object = initialAgentPoolConfiguration
-
-@description('The control plane node configuration of the AKS cluster')
-output clusterControlPlaneNodeConfiguration object = aks.properties.controlPlaneNodeConfiguration
-
-@description('The network configuration of the AKS cluster')
-output clusterNetworkConfiguration object = aks.properties.networkConfiguration
-
-@description('The AAD configuration of the AKS cluster')
-output clusterAadConfiguration object = aks.properties.aadConfiguration
-
-@description('The administrator configuration of the AKS cluster')
-output clusterAdministratorConfiguration object = aks.properties.administratorConfiguration
-
-@description('The managed resource group configuration of the AKS cluster')
-output clusterManagedResourceGroupConfiguration object = aks.properties.managedResourceGroupConfiguration

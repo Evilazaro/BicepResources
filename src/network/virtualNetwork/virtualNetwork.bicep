@@ -32,32 +32,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-01-01' = {
   tags: tags  
 }
 
-@description('The name of the virtual network')
-output virtualNetworkName string = virtualNetwork.name
+@description('The Subnet Address Prefix')
+var subnetAddressPrefix  = '10.0.0.0/24'
 
-@description('The location of the virtual network')
-output virtualNetworkLocation string = virtualNetwork.location
-
-@description('The address prefix of the virtual network')
-output virtualNetworkAddressPrefix string = virtualNetwork.properties.addressSpace.addressPrefixes[0]
-
-@description('Deploy a Subnet to the virtual network')
 module subnet './subNet.bicep' = {
   name: 'subnet'
   params: {
-    virtualNetworkName: virtualNetworkName
+    virtualNetworkName: virtualNetwork.name
     environmentType: environmentType
+    subnetAddressPrefix: subnetAddressPrefix
   }
 }
-
-@description('The name of the subnet')
-output subnetName string = subnet.outputs.subnetName
-
-@description('The address prefix of the subnet')
-output subnetAddressPrefix string = subnet.outputs.subnetAddressPrefix
-
-@description('The ID of the virtual network')
-output virtualNetworkId string = virtualNetwork.id
-
-@description('The ID of the subnet')
-output subnetId string = subnet.outputs.subnetId
