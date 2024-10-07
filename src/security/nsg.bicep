@@ -17,14 +17,5 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01' = {
   }
 }
 
-@description('The name of the network security group')
-output nsgName string = nsg.name
-
-@description('The location of the network security group')
-output nsgLocation string = nsg.location
-
-@description('The security rules of the network security group')
-output nsgSecurityRules array = nsg.properties.securityRules
-
 @description('The ID of the network security group')
-output nsgId string = nsg.id
+output nsgId string = 'asdfg'
