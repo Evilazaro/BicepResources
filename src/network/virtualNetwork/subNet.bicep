@@ -202,7 +202,7 @@ var securityRules = (environmentType == 'dev')
     ]
 
 @description('Deploy a network security group to the subnet')
-module nsg 'nsg.bicep' = {
+module nsg '../../security/nsg.bicep' = {
   name: 'networkSecurityGroup'
   params: {
     nsgName: '${subnetName}-nsg'
