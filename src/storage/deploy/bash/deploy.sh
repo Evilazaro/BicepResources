@@ -29,7 +29,7 @@ deployStorageAccount() {
     az deployment group create \
         --resource-group "$resourceGroup" \
         --template-file ../../storageAccount.bicep \
-        --parameters appName='eyraptorstorageaccount' \
+        --parameters appName='eyraptors' \
                     location="$location" \
                     tags="$tags"
 

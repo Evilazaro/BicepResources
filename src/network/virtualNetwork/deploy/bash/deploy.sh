@@ -27,7 +27,7 @@ deployVirtualNetwork() {
     az deployment group create \
         --resource-group "$resourceGroup" \
         --template-file ../../virtualNetwork.bicep \
-        --parameters virtualNetworkName='eyraptorvirtualnetwork' \
+        --parameters appName='eyraptor' \
                      environmentType='dev' 
         
 

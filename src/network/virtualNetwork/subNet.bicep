@@ -228,3 +228,6 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-01-01' = {
     nsg
   ]
 }
+
+@description('The ID of the subnet')
+output subnetId string = subnet.id

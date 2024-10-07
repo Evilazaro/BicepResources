@@ -18,4 +18,4 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01' = {
 }
 
 @description('The ID of the network security group')
-output nsgId string = 'asdfg'
+output nsgId string = nsg.id
