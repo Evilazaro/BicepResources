@@ -20,7 +20,6 @@ jobs:
         - name: Update Packages and Install Bicep CLI
           run: | 
             sudo apt-get update && \
-            sudo apt-get upgrade -y && \
             sudo az bicep upgrade
         
         - name: Checkout repository
@@ -35,10 +34,10 @@ jobs:
         
         - name: Compress Bicep Artifacts
           run: |
-            zip -r bicepArtifacts.zip ./bicepArtifacts
+            zip -r bicepArtifacts_v1.0.${{ github.run_number }}.zip ./bicepArtifacts
 
         - name: Upload Bicep Artifacts
           uses: actions/upload-artifact@v4
           with:
-            name: bicepArtifacts.zip
-            path: bicepArtifacts
+            name: bicepArtifacts_v1.0.${{ github.run_number }}.zip
+            path: bicepArtifacts_v1.0.${{ github.run_number }}.zip

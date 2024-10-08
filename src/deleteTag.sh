@@ -1,22 +1,7 @@
 #!/bin/bash
 
-# List all commit hashes in reverse order
-commits=$(git rev-list --reverse HEAD)
+# Delete all local tags
+git tag -l | xargs -n 1 git tag -d
 
-# Common tag name
-base_tag="v1.0."
-
-# Counter to differentiate tags
-count=1
-
-# Tag each commit with a unique tag
-for commit in $commits; do
-    tag_name="${base_tag}${count}"
-    echo "Tagging commit $commit with tag $tag_name"
-    git tag --delete "$tag_name" 
-    gh tag delete "$tag_name"
-    count=$((count + 1))
-done
-
-# Push all tags to the remote repository
-git push --tags
+# Delete all remote tags
+git tag -l | xargs -n 1 -I {} git push origin :refs/tags/{}
