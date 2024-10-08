@@ -38,8 +38,8 @@ jobs:
         - name: Upload Bicep Artifacts
           uses: actions/upload-artifact@v4
           with:
-            name: bicepFiles
-            path: bicepArtifacts.zip
+            name: bicepFiles.zip
+            path: bicepArtifacts
     
     publish-bicep-artifacts:
         runs-on: ubuntu-latest
@@ -51,7 +51,8 @@ jobs:
         - name: Download Bicep Artifacts
           uses: actions/download-artifact@v4
           with:
-            name: bicepFiles
+            name: bicepFiles.zip
+            path: bicepArtifacts
 
         - name: Upload Bicep Artifacts to Storage
           run: |
