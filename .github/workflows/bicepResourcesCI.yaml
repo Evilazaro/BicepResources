@@ -43,7 +43,7 @@ jobs:
           uses: actions/checkout@v2
 
         - name: Download Bicep Artifacts
-          uses: actions/download-artifact@v2
+          uses: actions/download-artifact@v4
           with:
             name: bicepFiles
 
