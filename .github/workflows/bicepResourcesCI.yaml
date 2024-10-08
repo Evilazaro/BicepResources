@@ -28,6 +28,11 @@ jobs:
                 echo "Building $file"
                 az bicep build --file $file --outdir ./bicepArtifacts
             done
+        - name: Outuput Bicep files
+          uses: actions/Outuput@v2
+          with:
+            name: bicepFiles
+            value: ./bicepArtifacts/*.json
     
     deploy:
         runs-on: ubuntu-latest
