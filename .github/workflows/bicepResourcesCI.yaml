@@ -28,18 +28,26 @@ jobs:
                 echo "Building $file"
                 az bicep build --file $file --outdir ./bicepArtifacts
             done
-        - name: Outuput Bicep files
-          uses: actions/Outuput@v2
+        
+        - name: Upload Bicep Artifacts
+          uses: actions/upload-artifact@v2
           with:
             name: bicepFiles
-            value: ./bicepArtifacts/*.json
+            path: ./bicepArtifacts/*.json
     
-    deploy:
+    publish-bicep-artifacts:
         runs-on: ubuntu-latest
         needs: build
         steps:
-        - name: Upload Bicep Artifacts
-          uses: actions/upload-artifact@v4
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Download Bicep Artifacts
+          uses: actions/download-artifact@v2
           with:
-            name: artifactsBicep-ARM-Templates
-            path: ./bicepArtifacts/*.json
+            name: bicepFiles
+
+        - name: Upload Bicep Artifacts to Storage
+          run: |
+            # Add your upload logic here, e.g., az storage blob upload
+            echo "Uploading Bicep artifacts"
