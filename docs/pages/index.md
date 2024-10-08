@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Developer Experience with Microsoft DevBox
+title: Bicep Template Resources for Deploying Components to Azure
 permalink: /
 ---
 
-# Developer Experience with Microsoft DevBox
+# Bicep Template Resources for Deploying Components to Azure
 ## Introduction
 
 This epository provides a collection of scripts to automate the provisioning and deployment of Microsoft DevBox environments in Azure.
