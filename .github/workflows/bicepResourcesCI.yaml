@@ -7,8 +7,8 @@ on:
             - 'bugfix/**' # Branches containing 'bugfix' in the name
     pull_request:
         branches:
-            - 'feature-**' # Branches containing 'feature' in the name
-            - 'bugfix-**' # Branches containing 'bugfix' in the name
+            - 'feature/**' # Branches containing 'feature' in the name
+            - 'bugfix/**' # Branches containing 'bugfix' in the name
             - main
 
 permissions:
