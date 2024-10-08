@@ -1,4 +1,4 @@
-name: Bicep Resources CI
+name: Bicep Resources Continuous Integration
 
 on:
     push:
@@ -39,5 +39,5 @@ jobs:
         - name: Upload Bicep Artifacts
           uses: actions/upload-artifact@v4
           with:
-            name: bicepFiles
-            path: bicepArtifacts.zip
+            name: bicepArtifacts.zip
+            path: bicepArtifacts
