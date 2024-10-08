@@ -13,7 +13,8 @@ count=1
 for commit in $commits; do
     tag_name="${base_tag}${count}"
     echo "Tagging commit $commit with tag $tag_name"
-    git tag --delete "$tag_name"
+    git tag --delete "$tag_name" 
+    gh tag delete "$tag_name"
     count=$((count + 1))
 done
 
