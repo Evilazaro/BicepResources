@@ -107,3 +107,11 @@ resource aks 'Microsoft.NetworkCloud/kubernetesClusters@2024-06-01-preview' = {
     }
   }
 }
+output clusterName string = aks.name
+output location string = aks.location
+output kubernetesVersion string = aks.properties.kubernetesVersion
+output agentPoolConfiguration array = aks.properties.initialAgentPoolConfigurations
+output controlPlaneNodeConfiguration object = aks.properties.controlPlaneNodeConfiguration
+output networkConfiguration object = aks.properties.networkConfiguration
+output administratorConfiguration object = aks.properties.administratorConfiguration
+
