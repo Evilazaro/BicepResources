@@ -2,9 +2,8 @@ name: Bicep Resources Continuous Deployment
 
 on:
     workflow_dispatch: # Allows manual triggering of the workflow
-    pull_request:
-        branches:
-            - main
+    merge_group: # Triggers the workflow when a merge group is completed
+        types: checks_requested
 
 permissions:
     contents: write # Grants write access to repository content, including creating releases.
@@ -17,7 +16,6 @@ jobs:
         - name: Update Packages and Install Bicep CLI
           run: | 
             sudo apt-get update && \
-            sudo apt-get upgrade -y && \
             sudo az bicep upgrade
         
         - name: Checkout repository
