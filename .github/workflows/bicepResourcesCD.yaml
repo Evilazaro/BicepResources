@@ -2,8 +2,10 @@ name: Bicep Resources Continuous Deployment
 
 on:
     workflow_dispatch: # Allows manual triggering of the workflow
-    merge_group: # Triggers the workflow when a merge group is completed
-        types: checks_requested
+    pull_request:
+        types: [closed] # Triggers the workflow when a pull request is closed
+        branches:
+            - main
 
 permissions:
     contents: write # Grants write access to repository content, including creating releases.
