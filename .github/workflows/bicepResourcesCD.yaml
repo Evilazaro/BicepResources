@@ -76,7 +76,7 @@ jobs:
           id: get_commit_messages
           run: |
             # Find the previous tag
-            previous_tag=$(git describe --tags --abbrev=0 --exclude=v1.0.8)
+            previous_tag=$(git describe --tags --abbrev=0 --exclude=v1.0.${{github.run_number}})
             # Collect all commits since the previous tag
             commit_messages=$(git log "$previous_tag"..HEAD --pretty=format:"%h - %s")
             echo "Commit messages since $previous_tag:"
