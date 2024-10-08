@@ -72,6 +72,8 @@ jobs:
             release_name: Release v1.0.0 # Change this to your desired release name
             draft: false
             prerelease: false
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Add the GITHUB_TOKEN here
 
         - name: Upload Release Asset
           uses: actions/upload-release-asset@v1
