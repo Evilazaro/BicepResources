@@ -1,0 +1,88 @@
+name: Bicep Resources Deployment
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+permissions:
+    contents: write
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Update Packages and Install Bicep CLI
+          run: | 
+            sudo apt-get update && \
+            sudo az bicep upgrade
+        
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Build Bicep files
+          run: |
+            for file in $(find ./src -name '*.bicep'); do
+                echo "Building $file"
+                az bicep build --file $file --outdir ./bicepArtifacts
+            done
+        
+        - name: Upload Bicep Artifacts
+          uses: actions/upload-artifact@v4
+          with:
+            name: bicepFiles
+            path: ./bicepArtifacts/*.json
+    
+    publish-bicep-artifacts:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Download Bicep Artifacts
+          uses: actions/download-artifact@v4
+          with:
+            name: bicepFiles
+
+        - name: Upload Bicep Artifacts to Storage
+          run: |
+            # Add your upload logic here, e.g., az storage blob upload
+            echo "Uploading Bicep artifacts"
+
+    create-release:
+        runs-on: ubuntu-latest
+        needs: publish-bicep-artifacts
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Download Bicep Artifacts
+          uses: actions/download-artifact@v4
+          with:
+            name: bicepFiles
+            path: bicepArtifacts
+
+
+        - name: Create GitHub Release
+          id: create_release
+          uses: actions/create-release@v1
+          with:
+            tag_name: v1.0.0 # Change this to your desired tag name
+            release_name: Release v1.0.0 # Change this to your desired release name
+            draft: false
+            prerelease: false
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Add the GITHUB_TOKEN here
+
+        - name: Upload Release Asset
+          uses: actions/upload-release-asset@v1
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ${{ github.workspace }}/bicepArtifacts
+            asset_name: bicepFiles.zip
+            asset_content_type: application/zip
