@@ -28,7 +28,11 @@ jobs:
                 echo "Building $file"
                 az bicep build --file $file --outdir ./bicepArtifacts
             done
-
+    
+    deploy:
+        runs-on: ubuntu-latest
+        
+        steps:
         - name: Upload Bicep Artifacts
           uses: actions/upload-artifact@v4
           with:
