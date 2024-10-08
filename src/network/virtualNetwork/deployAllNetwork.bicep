@@ -58,7 +58,7 @@ var securityRules = [
 var nsgName = '${appName}-nsg'
 
 @description('Deploy a Network Security Group to Azure')
-module nsg '../../security/nsg.bicep' = {
+module nsg '../../security/networkSecurityGroup.bicep' = {
   name: 'nsg'
   params: {
     nsgName: nsgName
