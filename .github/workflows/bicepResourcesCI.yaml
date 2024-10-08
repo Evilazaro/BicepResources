@@ -10,17 +10,7 @@ on:
             - main
 
 permissions:
-    contents: write
-    actions: write
-    deployments: write
-    checks: write
-    id-token: write
-    packages: write
-    pages: write
-    pull-requests: write
-    repository-projects: write
-    security-events: write
-    statuses: write
+    contents: write # Grants write access to repository content, including creating releases.
 
 jobs:
     build:
@@ -42,8 +32,65 @@ jobs:
                 az bicep build --file $file --outdir ./bicepArtifacts
             done
         
+        - name: Compress Bicep Artifacts
+          run: |
+            zip -r bicepArtifacts.zip ./bicepArtifacts
+
         - name: Upload Bicep Artifacts
           uses: actions/upload-artifact@v4
           with:
             name: bicepFiles
-            path: ./bicepArtifacts/*.json
+            path: bicepArtifacts.zip
+    
+    publish-bicep-artifacts:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Download Bicep Artifacts
+          uses: actions/download-artifact@v4
+          with:
+            name: bicepFiles
+
+        - name: Upload Bicep Artifacts to Storage
+          run: |
+            # Add your upload logic here, e.g., az storage blob upload
+            echo "Uploading Bicep artifacts"
+
+    create-release:
+        runs-on: ubuntu-latest
+        needs: publish-bicep-artifacts
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Download Bicep Artifacts
+          uses: actions/download-artifact@v4
+          with:
+            name: bicepFiles
+
+        - name: Create GitHub Release
+          id: create_release
+          uses: actions/create-release@v1
+          with:
+            tag_name: v1.0.${{github.run_number}} # Change this to your desired tag name
+            release_name: Release v1.0.${{github.run_number}} # Change this to your desired release name
+            repo: ${{ github.repository }}
+            commitish: ${{ github.sha }}
+            body: |
+              Changes in this Release
+              - ${{ github.event.commits.message }} 
+            draft: false
+            prerelease: false
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Upload Release Asset
+          uses: actions/upload-release-asset@v1
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: bicepArtifacts.zip
+            asset_name: bicepFiles.zip
+            asset_content_type: application/zip
