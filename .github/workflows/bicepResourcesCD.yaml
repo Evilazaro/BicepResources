@@ -72,20 +72,15 @@ jobs:
             name: bicepArtifacts.zip
             path: bicepArtifacts
 
-        - name: Gather Commit Messages
-          id: get_commit_messages
-          run: |
-            commit_messages=$(git log)
-            echo "$commit_messages"
-            echo "commit_messages=$commit_messages" >> $GITHUB_ENV
-
         - name: Create GitHub Release
           id: create_release
           uses: actions/create-release@v1
           with:
             tag_name: v1.0.${{github.run_number}} # Change this to your desired tag name
             release_name: Release v1.0.${{github.run_number}} # Change this to your desired release name
-            body: ${{ env.commit_messages }} # Use the commit messages for the release body
+            body: |
+              "Pull Request Info ${{ github.repository.pull_request }}"
+              "Commits ${{ github.event.commits }}"
             draft: false
             prerelease: false
           env:
