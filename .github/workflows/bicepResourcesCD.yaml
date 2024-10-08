@@ -33,13 +33,13 @@ jobs:
         
         - name: Compress Bicep Artifacts
           run: |
-            zip -r bicepArtifacts.zip ./bicepArtifacts
+            zip -r bicepArtifacts_v1.0.${{ github.run_number }}.zip ./bicepArtifacts
 
         - name: Upload Bicep Artifacts
           uses: actions/upload-artifact@v4
           with:
-            name: bicepArtifacts.zip
-            path: bicepArtifacts.zip # Reference the .zip file, not the directory
+            name: bicepArtifacts_v1.0.${{ github.run_number }}.zip
+            path: bicepArtifacts_v1.0.${{ github.run_number }}.zip
     
     publish-bicep-artifacts:
         runs-on: ubuntu-latest
@@ -51,12 +51,11 @@ jobs:
         - name: Download Bicep Artifacts
           uses: actions/download-artifact@v4
           with:
-            name: bicepArtifacts.zip
-            path: bicepArtifacts.zip # Again, use the .zip file
+            name: bicepArtifacts_v1.0.${{ github.run_number }}.zip
 
         - name: Upload Bicep Artifacts to Storage
           run: |
-            # Add your upload logic here, e.g., az storage blob upload
+            # Add your upload logic here
             echo "Uploading Bicep artifacts"
 
     create-release:
@@ -69,15 +68,14 @@ jobs:
         - name: Download Bicep Artifacts
           uses: actions/download-artifact@v4
           with:
-            name: bicepArtifacts.zip
-            path: bicepArtifacts.zip
+            name: bicepArtifacts_v1.0.${{ github.run_number }}.zip
 
         - name: Create GitHub Release
           id: create_release
           uses: actions/create-release@v1
           with:
-            tag_name: v1.0.${{github.run_number}} # Automatically increment tag number
-            release_name: Release v1.0.${{github.run_number}} # Automatically increment release name
+            tag_name: v1.0.${{ github.run_number }}
+            release_name: Release v1.0.${{ github.run_number }}
             body: |
               Pull Request Info: ${{ github.event.pull_request.html_url }}
               Commits: ${{ toJson(github.event.commits) }}
@@ -90,6 +88,7 @@ jobs:
           uses: actions/upload-release-asset@v1
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: bicepArtifacts.zip # Reference the .zip file
-            asset_name: bicepArtifacts.zip
+            asset_path: bicepArtifacts_v1.0.${{ github.run_number }}.zip
+            asset_name: bicepArtifacts_v1.0.${{ github.run_number }}.zip
             asset_content_type: application/zip
+
