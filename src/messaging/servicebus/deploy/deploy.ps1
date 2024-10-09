@@ -33,10 +33,14 @@ function Deploy-ServiceBus {
 
     $tags = @{ environment = 'dev'; department = 'IT' }
 
-    Write-Output "Deploying service bus in resource group: $resourceGroup"
     try {
-        az deployment group create --resource-group "$resourceGroup" --template-file ../deployServiceBus.bicep --parameters namespaceName='eyraptor-fsb'
-        Write-Output "Service bus deployed successfully."
+
+        for ($i = 0; $i -lt 2; $i++) {
+            Write-Output "Deploying service bus in resource group: $resourceGroup"
+            az deployment group create --resource-group "$resourceGroup" --template-file ../deployServiceBus.bicep --parameters namespaceName="eyraptor-$i"
+            Write-Output "Service bus deployed successfully."
+        }
+        
     } catch {
         Write-Error "Failed to deploy service bus: $_"
         exit 1
