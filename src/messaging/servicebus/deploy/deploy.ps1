@@ -1,3 +1,5 @@
+Set-ExecutionPolicy Bypass -Scope Process -Force; 
+
 # Enable strict mode for error handling
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
@@ -33,10 +35,7 @@ function Deploy-ServiceBus {
 
     Write-Output "Deploying service bus in resource group: $resourceGroup"
     try {
-        az deployment group create `
-            --resource-group $resourceGroup `
-            --template-file ../deployServiceBus.bicep `
-            --parameters @{ namespaceName = 'eyraptors'; tags = $tags }
+        az deployment group create --resource-group "$resourceGroup" --template-file ../deployServiceBus.bicep --parameters namespaceName='eyraptor-fsb'
         Write-Output "Service bus deployed successfully."
     } catch {
         Write-Error "Failed to deploy service bus: $_"
