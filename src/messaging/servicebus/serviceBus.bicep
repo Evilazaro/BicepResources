@@ -14,11 +14,11 @@ param tags object = {
 }
 
 var sku = environmentType == 'dev' ? {
-  name: 'Basic'
-  tier: 'Basic'
-} : {
   name: 'Standard'
   tier: 'Standard'
+} : {
+  name: 'Premium'
+  tier: 'Premium'
 }
 
 @description('Deploy a Service Bus namespace to Azure')
@@ -28,3 +28,14 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2023-01-01-preview' = {
   sku: sku
   tags: tags
 }
+
+@description('The service bus namespace name')
+output name string = serviceBus.name
+
+@description('The service bus namespace resource')
+output serviceBus object = serviceBus
+
+@description('The service bus namespace sku')
+output sku object = sku
+
+

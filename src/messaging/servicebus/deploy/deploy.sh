@@ -16,7 +16,7 @@ createResourceGroup() {
 deployStorageAccount() {
 
     echo "Building bicep file"
-    az bicep build -f ../serviceBus.bicep
+    az bicep build -f ../deployServiceBus.bicep
 
     if [ $? -ne 0 ]; then
         echo "Failed to build bicep file"
@@ -28,7 +28,7 @@ deployStorageAccount() {
     echo "Deploying service bus in resource group: $resourceGroup"
     az deployment group create \
         --resource-group "$resourceGroup" \
-        --template-file ../serviceBus.bicep \
+        --template-file ../deployServiceBus.bicep \
         --parameters namespaceName='eyraptors' \
             tags="$tags"
             
@@ -39,9 +39,6 @@ deployStorageAccount() {
 }
 
 
-# Main script execution
+clear
 createResourceGroup
 deployStorageAccount
-
-# Uncomment the following line to delete the resource group after deployment
-# az group delete --name "$resourceGroup" --yes --no-wait
