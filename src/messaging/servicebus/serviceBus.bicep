@@ -1,5 +1,5 @@
 @description('The name of the Service Bus namespace')
-param serviceBusNamespaceName string = 'myServiceBusNamespace'
+param namespaceName string = 'myServiceBusNamespace'
 
 @allowed([
   'dev'
@@ -23,7 +23,7 @@ var sku = environmentType == 'dev' ? {
 
 @description('Deploy a Service Bus namespace to Azure')
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2023-01-01-preview' = {
-  name: serviceBusNamespaceName
+  name: namespaceName
   location: resourceGroup().location
   sku: sku
   tags: tags
