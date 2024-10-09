@@ -51,4 +51,20 @@ output topicName string = topic.name
 @description('Topic URL')
 output topicUrl string = topic.id
 
+resource subscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2023-01-01-preview' = {
+  name: 'subscription1'
+  parent: topic
+}
+
+resource rule 'Microsoft.ServiceBus/namespaces/topics/subscriptions/rules@2023-01-01-preview' = {
+  name: 'rule1'
+  parent: subscription
+  properties: {
+    filterType: 'SqlFilter'
+    sqlFilter: {
+      sqlExpression: '1=1'
+    }
+  }
+}
+
 

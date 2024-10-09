@@ -140,15 +140,3 @@ module topic4 'serviceBusTopic.bicep' = {
     serviceBus
   ]
 }
-
-// @description('Deploy a Topic Subscription')
-// module topicSubscription 'serviceBusTopicsSubscription.bicep' = {
-//   name: 'topicSubscription'
-//   params: {
-//     subscriptionName: 'sub'
-//     topicName: '${namespaceName}topic'
-//   }
-//   dependsOn: [
-//     topic
-//   ]
-// }
