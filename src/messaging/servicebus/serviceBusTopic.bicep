@@ -46,7 +46,9 @@ resource topic 'Microsoft.ServiceBus/namespaces/topics@2023-01-01-preview' = {
 }
 
 @description('The Service Bus topic name')
-output name string = topic.name
+output topicName string = topic.name
 
 @description('Topic URL')
 output topicUrl string = topic.id
+
+

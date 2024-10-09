@@ -74,7 +74,7 @@ module queue3 'serviceBusQueue.bicep' = {
   ]
 }
 
-var topicName = '${namespaceName}-topic'
+var topicName = '${namespaceName}topic'
 
 @description('Deploy a Service Bus topic to Azure')
 module topic 'serviceBusTopic.bicep' = {
@@ -94,7 +94,7 @@ module topic1 'serviceBusTopic.bicep' = {
   name: 'serviceBusTopic1'
   params: {
     namespaceName: serviceBus.outputs.name
-    topicName: '${namespaceName}-topic1'	
+    topicName: '${namespaceName}topic1'	
     environmentType: environmentType
   }
   dependsOn: [
@@ -107,7 +107,7 @@ module topic2 'serviceBusTopic.bicep' = {
   name: 'serviceBusTopic2'
   params: {
     namespaceName: serviceBus.outputs.name
-    topicName: '${namespaceName}-topic2'
+    topicName: '${namespaceName}topic2'
     environmentType: environmentType
   }
   dependsOn: [
@@ -120,7 +120,7 @@ module topic3 'serviceBusTopic.bicep' = {
   name: 'serviceBusTopic3'
   params: {
     namespaceName: serviceBus.outputs.name
-    topicName: '${namespaceName}-topic3'
+    topicName: '${namespaceName}topic3'
     environmentType: environmentType
   }
   dependsOn: [
@@ -133,10 +133,22 @@ module topic4 'serviceBusTopic.bicep' = {
   name: 'serviceBusTopic4'
   params: {
     namespaceName: serviceBus.outputs.name
-    topicName: '${namespaceName}-topic4'
+    topicName: '${namespaceName}topic4'
     environmentType: environmentType
   }
   dependsOn: [
     serviceBus
   ]
 }
+
+// @description('Deploy a Topic Subscription')
+// module topicSubscription 'serviceBusTopicsSubscription.bicep' = {
+//   name: 'topicSubscription'
+//   params: {
+//     subscriptionName: 'sub'
+//     topicName: '${namespaceName}topic'
+//   }
+//   dependsOn: [
+//     topic
+//   ]
+// }

@@ -1,29 +1,18 @@
-param serviceBusNamespaceName string
-param topicName string
+@description('Service Bus Topic Subscription Name')
+param subscriptionName string
 
+@description('Service Bus Rule Name')
+param ruleName string
 
-resource topicSubscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2023-01-01-preview' = {
-  name: '${serviceBusNamespaceName}/${topicName}/mySubscription'
-  parent: serviceBusNamespace
-  properties: {
-    lockDuration: 'PT5M'
-    maxDeliveryCount: 10
-    deadLetteringOnMessageExpiration: false
-    enableBatchedOperations: true
-    autoDeleteOnIdle: 'P10675199DT2H48M5.4775807S'
-    forwardDeadLetteredMessagesTo: null
-    forwardTo: null
-    userMetadata: null
-  }
+@description('Existent Service Bus Topic Subscription')
+resource subscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2023-01-01-preview' existing = {
+  name: subscriptionName
 }
 
-resource serviceBusTopic 'Microsoft.EventGrid/topics@2024-06-01-preview' existing = {
-  name: topicName
-}
-
+@description('Deploy a Service Bus Rule')
 resource serviceBusRule 'Microsoft.ServiceBus/namespaces/topics/subscriptions/rules@2023-01-01-preview' = {
-  name: '${serviceBusNamespace.name}/myTopic/mySubscription/myRule'
-  parent: serviceBusNamespace
+  name: ruleName
+  parent: subscription
   properties: {
     filterType: 'SqlFilter'
     sqlFilter: {
