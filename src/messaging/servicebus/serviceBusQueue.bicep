@@ -38,7 +38,7 @@ var defaultQueueConfig = (environmentType == 'dev') ?  {
 }
 
 @description('Deploy a Service Bus queue to Azure')
-resource serviceBusQueue 'Microsoft.ServiceBus/namespaces/queues@2023-01-01-preview' = {
+resource queue 'Microsoft.ServiceBus/namespaces/queues@2023-01-01-preview' = {
   parent: serviceBus
   name: queueName
   properties: {
@@ -54,8 +54,8 @@ resource serviceBusQueue 'Microsoft.ServiceBus/namespaces/queues@2023-01-01-prev
 }
 
 @description('The Service Bus queue name')
-output name string = serviceBusQueue.name
+output name string = queue.name
 
 @description('Queue URL')
-output queueUrl string = serviceBusQueue.id
+output queueUrl string = queue.id
 

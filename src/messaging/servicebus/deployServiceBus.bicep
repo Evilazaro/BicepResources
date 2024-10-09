@@ -23,11 +23,26 @@ module serviceBus 'serviceBus.bicep' = {
 var queueName = '${namespaceName}-queue'
 
 @description('Deploy a Service Bus queue to Azure')
-module serviceBusQueue 'serviceBusQueue.bicep' = {
+module queue 'serviceBusQueue.bicep' = {
   name: 'serviceBusQueue'
   params: {
     namespaceName: serviceBus.outputs.name
     queueName: queueName
+    environmentType: environmentType
+  }
+  dependsOn: [
+    serviceBus
+  ]
+}
+
+var topicName = '${namespaceName}-topic'
+
+@description('Deploy a Service Bus topic to Azure')
+module topic 'serviceBusTopic.bicep' = {
+  name: 'serviceBusTopic'
+  params: {
+    namespaceName: serviceBus.outputs.name
+    topicName: topicName
     environmentType: environmentType
   }
   dependsOn: [
