@@ -39,7 +39,7 @@ jobs:
                 echo "Building $file"
                 az bicep build --file $file --outdir ./bicepArtifacts
 
-                paramFileName = "$file.${{ github.event.inputs.envitronment }}.Params.bicepparam"
+                paramFileName="$file.${{ github.event.inputs.envitronment }}.Params.bicepparam"
                 if [ -f $paramFileName ]; then
                     echo "Building $paramFileName"
                     az bicep build-params --file $paramFileName --outdir ./bicepArtifacts
