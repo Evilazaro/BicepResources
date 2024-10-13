@@ -38,12 +38,10 @@ jobs:
             for file in $(find ./src -name '*.bicep'); do
                 echo "Building $file"
                 az bicep build --file $file --outdir ./bicepArtifacts
-
-                paramFileName="$file.${{ github.event.inputs.envitronment }}.Params.bicepparam"
-                if [ -f $paramFileName ]; then
-                    echo "Building $paramFileName"
-                    az bicep build-params --file $paramFileName --outdir ./bicepArtifacts
-                fi
+            done
+            for file in $(find ./src -name '*.bicepparam'); do
+                echo "Building $file parameter file"
+                az bicep build-params --file $file --outdir ./bicepArtifacts
             done
         - name: Compress Bicep Artifacts
           run: |
