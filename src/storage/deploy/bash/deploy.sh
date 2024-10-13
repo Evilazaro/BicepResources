@@ -5,6 +5,7 @@ set -euo pipefail
 # Variables
 resourceGroup='storageRg'
 location='eastus'
+enviType="${1:-dev}"
 
 # Function to create resource group
 createResourceGroup() {
@@ -16,22 +17,29 @@ createResourceGroup() {
 deployStorageAccount() {
 
     echo "Building bicep file"
-    az bicep build -f ../../storageAccount.bicep
+    az bicep build -f ../../storageAccount.bicep --outfile storageAccount.json
 
     if [ $? -ne 0 ]; then
         echo "Failed to build bicep file"
         exit 1
     fi
 
-    tags="{'environment':'dev','department':'IT'}"
+    if [ $enviType == "dev" ]; then
+        paramsFileBuild='storageAccount.Dev.Params.bicepparam'
+    else
+        paramsFileBuild='storageAccount.Prod.Params.bicepparam'
+    fi
+
+    paramFileOutput='storageAccount.parameters.json'
+
+    az bicep build-params -f ../../$paramsFileBuild --outfile $paramFileOutput
 
     echo "Deploying storage account in resource group: $resourceGroup"
     az deployment group create \
+        --name "storageAccount-$enviType" \
         --resource-group "$resourceGroup" \
         --template-file ../../storageAccount.bicep \
-        --parameters appName='eyraptors' \
-                    location="$location" \
-                    tags="$tags"
+        --parameters @$paramFileOutput
 
     if [ $? -ne 0 ]; then
         echo "Failed to deploy storage account"
@@ -39,10 +47,15 @@ deployStorageAccount() {
     fi
 }
 
+validateInputs() {
+    if [ "$enviType" != "dev" ] && [ "$enviType" != "prod" ]; then
+        echo "Invalid environment type. Valid values are dev or prod"
+        exit 1
+    fi
+}
 
+clear
+validateInputs
 # Main script execution
 createResourceGroup
 deployStorageAccount
-
-# Uncomment the following line to delete the resource group after deployment
-# az group delete --name "$resourceGroup" --yes --no-wait
