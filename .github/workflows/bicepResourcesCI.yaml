@@ -1,14 +1,7 @@
 name: Bicep Resources Continuous Integration
 
-
-
 on:
     workflow_dispatch: # Allows manual triggering of the workflow
-      inputs:
-        envitronment:
-          required: true
-          default: 'Dev'
-          type: string
     push:
         branches:
             - 'feature/**' # Branches containing 'feature' in the name
