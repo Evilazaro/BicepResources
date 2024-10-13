@@ -1,7 +1,14 @@
 name: Bicep Resources Continuous Integration
 
+
+
 on:
     workflow_dispatch: # Allows manual triggering of the workflow
+      inputs:
+        envitronment:
+          required: true
+          default: 'Dev'
+          type: string
     push:
         branches:
             - 'feature/**' # Branches containing 'feature' in the name
@@ -9,7 +16,7 @@ on:
     pull_request:
         branches:
             - main
-
+            
 permissions:
     contents: write # Grants write access to repository content, including creating releases.
 
@@ -31,8 +38,13 @@ jobs:
             for file in $(find ./src -name '*.bicep'); do
                 echo "Building $file"
                 az bicep build --file $file --outdir ./bicepArtifacts
+
+                paramFileName = "$file.${{ github.event.inputs.envitronment }}.Params.bicepparam"
+                if [ -f $paramFileName ]; then
+                    echo "Building $paramFileName"
+                    az bicep build-params --file $paramFileName --outdir ./bicepArtifacts
+                fi
             done
-        
         - name: Compress Bicep Artifacts
           run: |
             zip -r bicepArtifacts_v1.0.${{ github.run_number }}.zip ./bicepArtifacts

@@ -5,7 +5,7 @@ set -euo pipefail
 # Variables
 resourceGroup='storageRg'
 location='eastus'
-enviType="${1:-dev}"
+enviType="${1:-Dev}"
 
 # Function to create resource group
 createResourceGroup() {
@@ -48,7 +48,7 @@ deployStorageAccount() {
 }
 
 validateInputs() {
-    if [ "$enviType" != "dev" ] && [ "$enviType" != "prod" ]; then
+    if [ "$enviType" != "Dev" ] && [ "$enviType" != "Prod" ]; then
         echo "Invalid environment type. Valid values are dev or prod"
         exit 1
     fi
