@@ -29,7 +29,10 @@ jobs:
                 echo "Building $file"
                 az bicep build --file $file --outdir ./bicepArtifacts
             done
-        
+            for file in $(find ./src -name '*.bicepparam'); do
+                echo "Building $file parameter file"
+                az bicep build-params --file $file --outdir ./bicepArtifacts
+            done        
         - name: Compress Bicep Artifacts
           run: |
             zip -r bicepArtifacts_v1.0.${{ github.run_number }}.zip ./bicepArtifacts
