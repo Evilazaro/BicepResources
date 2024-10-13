@@ -1,8 +1,8 @@
 @description('The name of the network security group')
-param nsgName string = 'myNsg'
+param nsgName string 
 
 @description('The security rules of the network security group')
-param securityRules array = []
+param securityRules array 
 
 @description('The tags of the network security group')
 param tags object

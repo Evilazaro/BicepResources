@@ -14,6 +14,7 @@ var devSettings =  {
     division: 'Engineering'
     Company: 'Contoso'
     Team: 'DevOps'
+    solution: 'ContosoApp'
   }
 }
 
