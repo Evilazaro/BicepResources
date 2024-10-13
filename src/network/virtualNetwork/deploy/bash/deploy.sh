@@ -16,7 +16,7 @@ createResourceGroup() {
 deployVirtualNetwork() {
 
     echo "Building bicep file"
-    az bicep build -f ../../virtualNetwork.bicep
+    az bicep build -f ../../virtualNetwork.bicep -outdir ../../
 
     if [ $? -ne 0 ]; then
         echo "Failed to build bicep file"

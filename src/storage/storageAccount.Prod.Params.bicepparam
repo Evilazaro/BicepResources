@@ -3,7 +3,7 @@ using 'storageAccount.bicep'
 var prefix = 'prod'
 
 @description('The settings for the development storage account')
-var devSettings =  {
+var prodSettings =  {
   name: '${prefix}eshopstorage'
   sku: 'Premium_LRS'
   storageKind: 'StorageV2'
@@ -18,10 +18,10 @@ var devSettings =  {
   }
 }
 
-param storageAccountName = devSettings.name
-param sku = devSettings.sku
-param storageKind = devSettings.storageKind
-param accesTier = devSettings.accesTier
-param tags = devSettings.tags
+param storageAccountName = prodSettings.name
+param sku = prodSettings.sku
+param storageKind = prodSettings.storageKind
+param accesTier = prodSettings.accesTier
+param tags = prodSettings.tags
 
 
