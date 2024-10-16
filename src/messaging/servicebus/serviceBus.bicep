@@ -1,24 +1,12 @@
 @description('The name of the Service Bus namespace')
 param namespaceName string = 'myServiceBusNamespace'
 
-@allowed([
-  'dev'
-  'prod'
-])
-@description('The environment type for the service bus namespace')
-param environmentType string = 'dev'
+@description('Service Bus SKU')
+param sku object 
 
 @description('The tags for the Service Bus namespace')
 param tags object = {
   
-}
-
-var sku = environmentType == 'dev' ? {
-  name: 'Standard'
-  tier: 'Standard'
-} : {
-  name: 'Premium'
-  tier: 'Premium'
 }
 
 @description('Deploy a Service Bus namespace to Azure')

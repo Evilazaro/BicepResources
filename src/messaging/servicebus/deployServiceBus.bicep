@@ -15,7 +15,11 @@ module serviceBus 'serviceBus.bicep' = {
   name: 'serviceBus'
   params: {
     namespaceName: namespaceName
-    environmentType: environmentType
+    sku: {
+      name: 'Standard'
+      tier: 'Standard'
+      capacity: 1
+    }
     tags: tags
   }
 }
@@ -27,7 +31,7 @@ module queue 'serviceBusQueue.bicep' = {
   name: 'serviceBusQueue'
   params: {
     namespaceName: serviceBus.outputs.name
-    queueName: queueName
+    name: queueName
     environmentType: environmentType
   }
   dependsOn: [
@@ -42,11 +46,20 @@ module topic 'serviceBusTopic.bicep' = {
   name: 'serviceBusTopic'
   params: {
     namespaceName: serviceBus.outputs.name
-    topicName: topicName
+    name: topicName
     environmentType: environmentType
   }
   dependsOn: [
     serviceBus
   ]
+}
+
+resource newtopic 'Microsoft.ServiceBus/namespaces/topics@2023-01-01-preview' existing = {
+  name: topicName
+}
+
+resource subscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2023-01-01-preview' = {
+  name: 'mySubscription'
+  parent: newtopic
 }
 
