@@ -2,7 +2,7 @@
 param namespaceName string
 
 @description('Queue name of the Service Bus Queue')
-param queueName string
+param name string
 
 @allowed([
   'dev'
@@ -40,7 +40,7 @@ var defaultQueueConfig = (environmentType == 'dev') ?  {
 @description('Deploy a Service Bus queue to Azure')
 resource queue 'Microsoft.ServiceBus/namespaces/queues@2023-01-01-preview' = {
   parent: serviceBus
-  name: queueName
+  name: name
   properties: {
     maxSizeInMegabytes: defaultQueueConfig.MaxSizeInMegabytes
     lockDuration: defaultQueueConfig.LockDuration
@@ -52,10 +52,4 @@ resource queue 'Microsoft.ServiceBus/namespaces/queues@2023-01-01-preview' = {
     status: defaultQueueConfig.Status
   }
 }
-
-@description('The Service Bus queue name')
-output name string = queue.name
-
-@description('Queue URL')
-output queueUrl string = queue.id
 

@@ -2,7 +2,7 @@
 param namespaceName string
 
 @description('Service Bus Topic name')
-param topicName string
+param name string
 
 @description('The environment type for the service bus namespace')
 param environmentType string = 'dev'
@@ -33,7 +33,7 @@ var defaultTopicConfig = (environmentType == 'dev') ?  {
 
 @description('Deploy a Service Bus topic to Azure')
 resource topic 'Microsoft.ServiceBus/namespaces/topics@2023-01-01-preview' = {
-  name: topicName
+  name: name
   parent: serviceBus
   properties: {
     maxSizeInMegabytes: defaultTopicConfig.MaxSizeInMegabytes
@@ -44,9 +44,3 @@ resource topic 'Microsoft.ServiceBus/namespaces/topics@2023-01-01-preview' = {
     status: defaultTopicConfig.Status
   }
 }
-
-@description('The Service Bus topic name')
-output topicName string = topic.name
-
-@description('Topic URL')
-output topicUrl string = topic.id
