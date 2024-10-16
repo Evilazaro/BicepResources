@@ -53,9 +53,3 @@ resource queue 'Microsoft.ServiceBus/namespaces/queues@2023-01-01-preview' = {
   }
 }
 
-@description('The Service Bus queue name')
-output name string = queue.name
-
-@description('Queue URL')
-output queueUrl string = queue.id
-
