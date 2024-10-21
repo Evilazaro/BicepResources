@@ -1,7 +1,7 @@
 @description('The name of the storage account')
 @maxLength(21)
 @minLength(3)
-param storageAccountName string
+param name string
 
 @allowed([
   'Standard_LRS'
@@ -19,29 +19,46 @@ param sku string
   'BlobStorage'
 ])
 @description('The kind of the storage account')
-param storageKind string
+param kind string
 
-@description('The access tier of the storage account')
 @allowed([
   'Hot'
   'Cool'
 ])
-param accesTier string
+param accessTier string
+
+@allowed([
+  'SystemAssigned'
+  'UserAssigned'
+  'None'
+])
+@description('The identity type of the storage account')
+param identity string
 
 @description('The tags of the storage account')
-param tags object 
+param tags object
+
+@description('The user assigned managed identity resource IDs')
+param userAssignedIdentities object
 
 @description('Deploy a storage account to Azure with a unique name')
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
-  name: storageAccountName
+  name: name
   location: resourceGroup().location
   sku: {
     name: sku
   }
-  kind: storageKind
+  kind: kind
   properties: {
-    accessTier: accesTier
+    accessTier: accessTier    
   }
+  identity: (identity == 'SystemAssigned' || identity == 'None')
+    ? {
+        type: identity
+      }
+    : {
+        type: identity
+        userAssignedIdentities: userAssignedIdentities
+      }
   tags: tags
 }
-
