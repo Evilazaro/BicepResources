@@ -1,7 +1,7 @@
 @description('The name of the storage account')
 @maxLength(21)
 @minLength(3)
-param storageAccountName string
+param name string
 
 @allowed([
   'Standard_LRS'
@@ -19,7 +19,7 @@ param sku string
   'BlobStorage'
 ])
 @description('The kind of the storage account')
-param storageKind string
+param kind string
 
 @description('The access tier of the storage account')
 @allowed([
@@ -33,12 +33,12 @@ param tags object
 
 @description('Deploy a storage account to Azure with a unique name')
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
-  name: storageAccountName
+  name: name
   location: resourceGroup().location
   sku: {
     name: sku
   }
-  kind: storageKind
+  kind: kind
   properties: {
     accessTier: accesTier
   }

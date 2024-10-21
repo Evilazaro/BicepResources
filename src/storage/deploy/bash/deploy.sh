@@ -4,8 +4,8 @@ set -euo pipefail
 
 # Variables
 resourceGroup='storageRg'
-location='eastus'
-enviType="${1:-Dev}"
+location='westus3'
+enviType="${1:-dev}"
 
 # Function to create resource group
 createResourceGroup() {
