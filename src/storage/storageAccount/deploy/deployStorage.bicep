@@ -57,44 +57,44 @@ module storageAccount '../storageAccount.bicep' = {
 module blob '../blob/blob.bicep' = {
   name: 'blob'
   params: {
-    name: '${storageAccount.outputs.storageAccountName}-blob'
-    storageAccountName: storageAccount.outputs.storageAccountName
+    name: 'myblob'
+    storageAccountName: name
   }
   dependsOn: [
     storageAccount
   ]
 }
 
-module container '../container/container.bicep' = {
-  name: 'container'
-  params: {
-    name: '${storageAccount.outputs.storageAccountName}-container'
-    blobName:'myBlog'
-    storageAccountName: storageAccount.outputs.storageAccountName
-  }
- dependsOn: [
-    blob
-  ]
-}
+// module container '../container/container.bicep' = {
+//   name: 'container'
+//   params: {
+//     name: '${storageAccount.outputs.storageAccountName}-container'
+//     blobName:'myBlog'
+//     storageAccountName: storageAccount.outputs.storageAccountName
+//   }
+//  dependsOn: [
+//     blob
+//   ]
+// }
 
-module queue '../queue/queue.bicep' = {
-  name: 'queue'
-  params: {
-    name: '${storageAccount.outputs.storageAccountName}-queue'
-    storageAccountName: storageAccount.outputs.storageAccountName
-  }
-  dependsOn: [
-    storageAccount
-  ]
-}
+// module queue '../queue/queue.bicep' = {
+//   name: 'queue'
+//   params: {
+//     name: '${storageAccount.outputs.storageAccountName}-queue'
+//     storageAccountName: storageAccount.outputs.storageAccountName
+//   }
+//   dependsOn: [
+//     storageAccount
+//   ]
+// }
 
-module table '../table/table.bicep' = {
-  name: 'table'
-  params: {
-    name: '${storageAccount.outputs.storageAccountName}-table'
-    storageAccountName: storageAccount.outputs.storageAccountName
-  }
-  dependsOn: [
-    storageAccount
-  ]
-}
+// module table '../table/table.bicep' = {
+//   name: 'table'
+//   params: {
+//     name: '${storageAccount.outputs.storageAccountName}-table'
+//     storageAccountName: storageAccount.outputs.storageAccountName
+//   }
+//   dependsOn: [
+//     storageAccount
+//   ]
+// }

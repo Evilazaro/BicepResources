@@ -17,7 +17,7 @@ createResourceGroup() {
 deployStorageAccount() {
 
     echo "Building bicep file"
-    az bicep build -f ../../storageAccount.bicep --parameters $paramsFileBuild --outfile storageAccount.json
+    az bicep build -f ../deployStorage.bicep --outfile storageAccount.json
 
     if [ $? -ne 0 ]; then
         echo "Failed to build bicep file"
@@ -25,20 +25,20 @@ deployStorageAccount() {
     fi
 
     if [ $enviType == "dev" ]; then
-        paramsFileBuild='storageAccount.Dev.Params.bicepparam'
+        paramsFileBuild='deployStorageAccount.Dev.Params.bicepparam'
     else
-        paramsFileBuild='storageAccount.Prod.Params.bicepparam'
+        paramsFileBuild='deployStorageAccount.Prod.Params.bicepparam'
     fi
 
     paramFileOutput='storageAccount.parameters.json'
 
-    az bicep build-params -f ../../$paramsFileBuild --outfile $paramFileOutput
+    az bicep build-params -f ../$paramsFileBuild --outfile $paramFileOutput
 
     echo "Deploying storage account in resource group: $resourceGroup"
     az deployment group create \
         --name "storageAccount-$enviType" \
         --resource-group "$resourceGroup" \
-        --template-file ../../storageAccount.bicep \
+        --template-file ../deployStorage.bicep \
         --parameters @$paramFileOutput
 
     if [ $? -ne 0 ]; then

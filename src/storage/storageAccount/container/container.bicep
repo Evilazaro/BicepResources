@@ -11,6 +11,7 @@ param storageAccountName string
 @description('Get an Existent Blob Service')
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' existing = {
   name: storageAccountName
+  scope:resourceGroup()
 }
 
 @description('Get an Existent Blob Service')
