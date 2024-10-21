@@ -31,13 +31,11 @@ jobs:
             for file in $(find ./src -name '*.bicep'); do
               folder=$(dirname "$file" | sed 's|./src/||')
               echo "Building $file in folder $folder"
-              mkdir ./bicepArtifacts/$folder
               az bicep build --file "$file" --outdir "./bicepArtifacts/$folder"
             done
             for file in $(find ./src -name '*.bicepparam'); do
                 folder=$(dirname "$file" | sed 's|./src/||')
                 echo "Building $file in folder $folder"
-                mkdir ./bicepArtifacts/$folder
                 az bicep build-params --file $file --outdir "./bicepArtifacts/$folder"
             done
         - name: Compress Bicep Artifacts
