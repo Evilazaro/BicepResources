@@ -62,3 +62,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
       }
   tags: tags
 }
+
+@description('Stoarge account name')
+output storageAccountName string = storageAccount.name
+
+@description('Storage account resource ID')
+output storageAccountResourceId string = storageAccount.id

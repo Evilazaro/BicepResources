@@ -5,12 +5,12 @@ param name string
 param blobName string
 
 @description('Storage Account Name of an existent Storage Account')
-param stroageAccountName string
+param storageAccountName string
 
 
 @description('Get an Existent Blob Service')
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' existing = {
-  name: stroageAccountName
+  name: storageAccountName
 }
 
 @description('Get an Existent Blob Service')
