@@ -24,6 +24,9 @@ var settings =  {
   }
 }
 
+@description('The user assigned managed identity resource IDs')
+var userAssignedIdentityIds = {}
+
 @description('The name of the storage account')
 param name = settings.name
 
@@ -34,7 +37,13 @@ param sku = settings.sku
 param kind = settings.kind
 
 @description('The storage account access tier')
-param accesTier = settings.accesTier
+param accessTier = settings.accesTier
+
+@description('The storage account identity type')
+param identity = 'None'
+
+@description('The user assigned managed identity resource IDs')
+param userAssignedIdentities = userAssignedIdentityIds
 
 @description('The storage account tags')
 param tags = settings.tags

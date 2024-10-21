@@ -21,15 +21,25 @@ param sku string
 @description('The kind of the storage account')
 param kind string
 
-@description('The access tier of the storage account')
 @allowed([
   'Hot'
   'Cool'
 ])
-param accesTier string
+param accessTier string
+
+@allowed([
+  'SystemAssigned'
+  'UserAssigned'
+  'None'
+])
+@description('The identity type of the storage account')
+param identity string
 
 @description('The tags of the storage account')
-param tags object 
+param tags object
+
+@description('The user assigned managed identity resource IDs')
+param userAssignedIdentities object
 
 @description('Deploy a storage account to Azure with a unique name')
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
@@ -40,8 +50,15 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   }
   kind: kind
   properties: {
-    accessTier: accesTier
+    accessTier: accessTier    
   }
+  identity: (identity == 'SystemAssigned' || identity == 'None')
+    ? {
+        type: identity
+      }
+    : {
+        type: identity
+        userAssignedIdentities: userAssignedIdentities
+      }
   tags: tags
 }
-

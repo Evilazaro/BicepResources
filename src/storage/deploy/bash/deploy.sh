@@ -17,7 +17,7 @@ createResourceGroup() {
 deployStorageAccount() {
 
     echo "Building bicep file"
-    az bicep build -f ../../storageAccount.bicep --outfile storageAccount.json
+    az bicep build -f ../../storageAccount.bicep --parameters $paramsFileBuild --outfile storageAccount.json
 
     if [ $? -ne 0 ]; then
         echo "Failed to build bicep file"
