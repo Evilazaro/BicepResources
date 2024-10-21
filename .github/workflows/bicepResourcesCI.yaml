@@ -31,16 +31,16 @@ jobs:
             for file in $(find ./src -name '*.bicep'); do
               folder=$(dirname "$file" | sed 's|./src/||')
               echo "Building $file in folder $folder"
-              az bicep build --file "$file" --outdir "/bicepArtifacts/$folder"
+              az bicep build --file "$file" --outdir "./bicepArtifacts/$folder"
             done
             for file in $(find ./src -name '*.bicepparam'); do
                 folder=$(dirname "$file" | sed 's|./src/||')
                 echo "Building $file in folder $folder"
-                az bicep build-params --file $file --outdir "/bicepArtifacts/$folder"
+                az bicep build-params --file $file --outdir "./bicepArtifacts/$folder"
             done
         - name: Compress Bicep Artifacts
           run: |
-            zip -r bicepArtifacts_v1.0.${{ github.run_number }}.zip /bicepArtifacts
+            zip -r bicepArtifacts_v1.0.${{ github.run_number }}.zip ./bicepArtifacts
 
         - name: Upload Bicep Artifacts
           uses: actions/upload-artifact@v4
