@@ -1,6 +1,3 @@
-@description('Name of the Blob Service')
-param name string
-
 @description('Name of the Storage Account')
 param storageAccountName string
 
@@ -12,6 +9,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' existing 
 
 @description('Deploy a Blob Service to Azure with a unique name')
 resource blob 'Microsoft.Storage/storageAccounts/blobServices@2023-05-01' = {
-  name: name
+  name: 'default'
   parent: storageAccount
 }
+
+@description('Blob Service name')
+output blobName string = blob.name

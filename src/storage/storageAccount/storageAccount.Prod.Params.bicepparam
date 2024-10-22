@@ -36,16 +36,23 @@ var userAssignedIdentityIds = (identityType == 'UserAssigned' ) ? {
 }
 : {}
 
+@description('The name of the storage account')
 param name = settings.name
 
+@description('The storage account sku')
 param sku = settings.sku
 
+@description('The storage account kind')
 param kind = settings.kind
 
+@description('The storage account access tier')
 param accessTier = settings.accesTier
 
-param identity = identityType
+@description('The storage account identity type')
+param identity = 'UserAssigned'
 
+@description('The user assigned managed identity resource IDs')
 param userAssignedIdentities = userAssignedIdentityIds
 
+@description('The storage account tags')
 param tags = settings.tags

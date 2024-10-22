@@ -41,6 +41,13 @@ param tags object
 @description('The user assigned managed identity resource IDs')
 param userAssignedIdentities object
 
+@allowed([
+  'dev'
+  'prod'
+])
+@description('Environment name')
+param env string
+
 module storageAccount '../storageAccount.bicep' = {
   name: 'storageAccount'
   params: {
@@ -57,44 +64,67 @@ module storageAccount '../storageAccount.bicep' = {
 module blob '../blob/blob.bicep' = {
   name: 'blob'
   params: {
-    name: 'myblob'
-    storageAccountName: name
+    storageAccountName: storageAccount.outputs.storageAccountName
   }
   dependsOn: [
     storageAccount
   ]
 }
 
-// module container '../container/container.bicep' = {
-//   name: 'container'
-//   params: {
-//     name: '${storageAccount.outputs.storageAccountName}-container'
-//     blobName:'myBlog'
-//     storageAccountName: storageAccount.outputs.storageAccountName
-//   }
-//  dependsOn: [
-//     blob
-//   ]
-// }
+@description('The name of the Blob Service')
+output blobName string = blob.outputs.blobName
 
-// module queue '../queue/queue.bicep' = {
-//   name: 'queue'
-//   params: {
-//     name: '${storageAccount.outputs.storageAccountName}-queue'
-//     storageAccountName: storageAccount.outputs.storageAccountName
-//   }
-//   dependsOn: [
-//     storageAccount
-//   ]
-// }
+ module container '../container/container.bicep' = if (env == 'dev')  {
+  name: 'container'
+  params: {
+    name: '${storageAccount.outputs.storageAccountName}-container'
+    blobName:'default'
+    storageAccountName: storageAccount.outputs.storageAccountName
+  }
+ dependsOn: [
+    blob
+  ]
+}
 
-// module table '../table/table.bicep' = {
-//   name: 'table'
-//   params: {
-//     name: '${storageAccount.outputs.storageAccountName}-table'
-//     storageAccountName: storageAccount.outputs.storageAccountName
-//   }
-//   dependsOn: [
-//     storageAccount
-//   ]
-// }
+@description('The name of the container')
+output containerName string = container.outputs.containerName
+
+module queue '../queue/queue.bicep' = if (env == 'dev')  {
+  name: 'queue'
+  params: {
+    name: '${storageAccount.outputs.storageAccountName}-queue'
+    storageAccountName: storageAccount.outputs.storageAccountName
+  }
+  dependsOn: [
+    storageAccount
+  ]
+}
+
+@description('The name of the queue')
+output queueName string = queue.outputs.queueName
+
+module table '../table/table.bicep' = if (env == 'dev')  {
+  name: 'table'
+  params: {
+    name: '${storageAccount.outputs.storageAccountName}table'
+    storageAccountName: storageAccount.outputs.storageAccountName
+  }
+  dependsOn: [
+    storageAccount
+  ]
+}
+
+@description('The name of the table')
+output tableName string = table.outputs.tableName
+
+module fileShare '../fileshare/fileshare.bicep' = if (env == 'dev')  {
+  name: 'fileShare'
+  params: {
+    name: '${storageAccount.outputs.storageAccountName}fileshare'
+    storageAccountName: storageAccount.outputs.storageAccountName
+    accesTier: accessTier
+  }
+  dependsOn: [
+    storageAccount
+  ]
+}

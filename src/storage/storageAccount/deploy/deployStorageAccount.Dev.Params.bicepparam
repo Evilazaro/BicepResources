@@ -48,4 +48,11 @@ param userAssignedIdentities = userAssignedIdentityIds
 @description('The storage account tags')
 param tags = settings.tags
 
+@allowed([
+  'dev'
+  'prod'
+])
+@description('Environment name')
+param env = 'dev'
+
 
