@@ -41,6 +41,13 @@ param tags object
 @description('The user assigned managed identity resource IDs')
 param userAssignedIdentities object
 
+@allowed([
+  'dev'
+  'prod'
+])
+@description('Environment name')
+param env string = 'dev'
+
 module storageAccount '../storageAccount.bicep' = {
   name: 'storageAccount'
   params: {
@@ -67,7 +74,7 @@ module blob '../blob/blob.bicep' = {
 @description('The name of the Blob Service')
 output blobName string = blob.outputs.blobName
 
-module container '../container/container.bicep' = {
+ module container '../container/container.bicep' = if (env == 'dev')  {
   name: 'container'
   params: {
     name: '${storageAccount.outputs.storageAccountName}-container'
@@ -82,9 +89,10 @@ module container '../container/container.bicep' = {
 @description('The name of the container')
 output containerName string = container.outputs.containerName
 
-module queue '../queue/queue.bicep' = {
+module queue '../queue/queue.bicep' = if (env == 'dev')  {
   name: 'queue'
   params: {
+    name: '${storageAccount.outputs.storageAccountName}-queue'
     storageAccountName: storageAccount.outputs.storageAccountName
   }
   dependsOn: [
@@ -95,13 +103,13 @@ module queue '../queue/queue.bicep' = {
 @description('The name of the queue')
 output queueName string = queue.outputs.queueName
 
-// module table '../table/table.bicep' = {
-//   name: 'table'
-//   params: {
-//     name: '${storageAccount.outputs.storageAccountName}-table'
-//     storageAccountName: storageAccount.outputs.storageAccountName
-//   }
-//   dependsOn: [
-//     storageAccount
-//   ]
-// }
+module table '../table/table.bicep' = if (env == 'dev')  {
+  name: 'table'
+  params: {
+    name: '${storageAccount.outputs.storageAccountName}-table'
+    storageAccountName: storageAccount.outputs.storageAccountName
+  }
+  dependsOn: [
+    storageAccount
+  ]
+}
