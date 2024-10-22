@@ -25,3 +25,6 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   name: name
   parent: blob
 }
+
+@description('Container name')
+output containerName string = container.name

@@ -57,36 +57,43 @@ module storageAccount '../storageAccount.bicep' = {
 module blob '../blob/blob.bicep' = {
   name: 'blob'
   params: {
-    name: 'myblob'
-    storageAccountName: name
+    storageAccountName: storageAccount.outputs.storageAccountName
   }
   dependsOn: [
     storageAccount
   ]
 }
 
-// module container '../container/container.bicep' = {
-//   name: 'container'
-//   params: {
-//     name: '${storageAccount.outputs.storageAccountName}-container'
-//     blobName:'myBlog'
-//     storageAccountName: storageAccount.outputs.storageAccountName
-//   }
-//  dependsOn: [
-//     blob
-//   ]
-// }
+@description('The name of the Blob Service')
+output blobName string = blob.outputs.blobName
 
-// module queue '../queue/queue.bicep' = {
-//   name: 'queue'
-//   params: {
-//     name: '${storageAccount.outputs.storageAccountName}-queue'
-//     storageAccountName: storageAccount.outputs.storageAccountName
-//   }
-//   dependsOn: [
-//     storageAccount
-//   ]
-// }
+module container '../container/container.bicep' = {
+  name: 'container'
+  params: {
+    name: '${storageAccount.outputs.storageAccountName}-container'
+    blobName:'default'
+    storageAccountName: storageAccount.outputs.storageAccountName
+  }
+ dependsOn: [
+    blob
+  ]
+}
+
+@description('The name of the container')
+output containerName string = container.outputs.containerName
+
+module queue '../queue/queue.bicep' = {
+  name: 'queue'
+  params: {
+    storageAccountName: storageAccount.outputs.storageAccountName
+  }
+  dependsOn: [
+    storageAccount
+  ]
+}
+
+@description('The name of the queue')
+output queueName string = queue.outputs.queueName
 
 // module table '../table/table.bicep' = {
 //   name: 'table'
