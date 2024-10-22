@@ -106,7 +106,7 @@ output queueName string = queue.outputs.queueName
 module table '../table/table.bicep' = if (env == 'dev')  {
   name: 'table'
   params: {
-    name: '${storageAccount.outputs.storageAccountName}-table'
+    name: '${storageAccount.outputs.storageAccountName}table'
     storageAccountName: storageAccount.outputs.storageAccountName
   }
   dependsOn: [
