@@ -46,7 +46,7 @@ param userAssignedIdentities object
   'prod'
 ])
 @description('Environment name')
-param env string = 'dev'
+param env string
 
 module storageAccount '../storageAccount.bicep' = {
   name: 'storageAccount'
@@ -108,6 +108,21 @@ module table '../table/table.bicep' = if (env == 'dev')  {
   params: {
     name: '${storageAccount.outputs.storageAccountName}table'
     storageAccountName: storageAccount.outputs.storageAccountName
+  }
+  dependsOn: [
+    storageAccount
+  ]
+}
+
+@description('The name of the table')
+output tableName string = table.outputs.tableName
+
+module fileShare '../fileshare/fileshare.bicep' = if (env == 'dev')  {
+  name: 'fileShare'
+  params: {
+    name: '${storageAccount.outputs.storageAccountName}fileshare'
+    storageAccountName: storageAccount.outputs.storageAccountName
+    accesTier: accessTier
   }
   dependsOn: [
     storageAccount
